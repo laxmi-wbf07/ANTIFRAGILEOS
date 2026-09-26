@@ -1,0 +1,1198 @@
+/* ============================================================
+   ENGINE — design system
+   Ink & bone. A time spine. Hairlines, no shadows.
+   ============================================================ */
+
+:root{
+  --ink:#0D1014;
+  --s1:#151A20;
+  --s2:#1D242C;
+  --s3:#262F39;
+  --line:#2A323C;
+  --line-soft:#1F262E;
+
+  --tx:#E8E2D6;
+  --tx2:#9E9789;
+  --tx3:#6E7580;
+
+  --accent:#C65D4B;
+  --accent-ink:#1A0E0B;
+  --accent-wash:#3A1F19;
+
+  --done:#6FA893;
+  --done-ink:#08201A;
+  --done-wash:#1B3A33;
+
+  --warn:#D9A441;
+  --warn-wash:#3A2E12;
+  --bad:#D2685C;
+  --bad-wash:#3A1C18;
+  --cool:#7C9AC4;
+
+  --r1:8px; --r2:12px; --r3:18px;
+  --gut:18px;
+  --rail:56px;
+  --tabh:60px;
+  --pad:14px;
+
+  --fs-xs:.72rem;
+  --fs-sm:.82rem;
+  --fs-md:.94rem;
+  --fs-lg:1.08rem;
+  --fs-xl:1.4rem;
+  --fs-2xl:1.9rem;
+  --fs-3xl:2.9rem;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --dur:180ms;
+
+  color-scheme:dark;
+}
+
+[data-theme="light"]{
+  --ink:#F6F2EA;
+  --s1:#FFFFFF;
+  --s2:#EFEAE0;
+  --s3:#E3DCCF;
+  --line:#DED6C7;
+  --line-soft:#EBE4D8;
+
+  --tx:#1A1D22;
+  --tx2:#5E6470;
+  --tx3:#8C8B85;
+
+  --accent:#B14B39;
+  --accent-ink:#FFF4F1;
+  --accent-wash:#F6E2DC;
+
+  --done:#3F7F6B;
+  --done-ink:#EFFAF6;
+  --done-wash:#DDEEE7;
+
+  --warn:#8A6710;
+  --warn-wash:#F4E9CC;
+  --bad:#B2453A;
+  --bad-wash:#F6DFDB;
+  --cool:#3F6699;
+
+  color-scheme:light;
+}
+
+[data-accent="amber"]{  --accent:#D9A441; --accent-ink:#1C1405; --accent-wash:#3A2E12; }
+[data-accent="jade"]{   --accent:#5CA085; --accent-ink:#062018; --accent-wash:#18342B; }
+[data-accent="indigo"]{ --accent:#7C8CE0; --accent-ink:#0B0E22; --accent-wash:#1E2347; }
+[data-accent="violet"]{ --accent:#A47BD4; --accent-ink:#170C24; --accent-wash:#2C1D40; }
+[data-accent="steel"]{  --accent:#7C9AC4; --accent-ink:#081018; --accent-wash:#1B2836; }
+
+[data-theme="light"][data-accent="amber"]{  --accent:#8A6710; --accent-ink:#FFF8E8; --accent-wash:#F3E8C9; }
+[data-theme="light"][data-accent="jade"]{   --accent:#2F7A60; --accent-ink:#EFFBF6; --accent-wash:#D9EEE6; }
+[data-theme="light"][data-accent="indigo"]{ --accent:#4657B8; --accent-ink:#F0F2FF; --accent-wash:#DFE3F8; }
+[data-theme="light"][data-accent="violet"]{ --accent:#6F45A8; --accent-ink:#F8F1FF; --accent-wash:#EBDFF8; }
+[data-theme="light"][data-accent="steel"]{  --accent:#3F6699; --accent-ink:#F0F5FF; --accent-wash:#DEE7F4; }
+
+[data-density="compact"]{ --pad:11px; --gut:14px; --tabh:54px; }
+[data-density="roomy"]{ --pad:18px; --gut:22px; }
+
+/* ---------- reset ---------- */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ink);
+  color:var(--tx);
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  overscroll-behavior-y:none;
+  min-height:100dvh;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit;margin:0}
+button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+a{color:var(--cool);text-underline-offset:2px}
+h1,h2,h3,h4{margin:0;font-weight:620;letter-spacing:-.015em;line-height:1.25}
+h1{font-size:var(--fs-xl)}
+h2{font-size:var(--fs-lg)}
+h3{font-size:var(--fs-md)}
+p{margin:.4em 0}
+ul,ol{margin:0}
+img,svg{display:block;max-width:100%}
+/* Every icon from util.js carries .ic, so one rule gives all of them a
+   stroke, a colour and a size even where no component rule mentions svg.
+   Without this the flame in a chip and the grid/list toggle drew as
+   invisible black fills on a black ground. Component rules still win. */
+svg.ic{width:1.08em;height:1.08em;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+::selection{background:var(--accent);color:var(--accent-ink)}
+
+/* ---------- type helpers ---------- */
+.t2{color:var(--tx2)}
+.t3{color:var(--tx3)}
+.sm{font-size:var(--fs-sm)}
+.xs{font-size:var(--fs-xs)}
+.num{font-variant-numeric:tabular-nums}
+.bold{font-weight:620}
+.trunc{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.center{text-align:center}
+.mt{margin-top:12px}
+.mt2{margin-top:20px}
+
+/* ---------- app shell ---------- */
+#app{min-height:100dvh;display:flex;flex-direction:column}
+#topbar{
+  position:sticky;top:0;z-index:40;
+  padding:calc(env(safe-area-inset-top) + 10px) var(--gut) 10px;
+  background:var(--ink);
+  border-bottom:1px solid transparent;
+  transition:border-color var(--dur) var(--ease);
+}
+#topbar.scrolled{border-bottom-color:var(--line);background:color-mix(in srgb,var(--ink) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.topbar-in{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:720px;margin:0 auto}
+.topbar-title{font-size:1.02rem;font-weight:620;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-sub{font-size:var(--fs-xs);color:var(--tx2);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-actions{display:flex;align-items:center;gap:4px;flex:none}
+/* Everything in the top bar is reachable with one thumb, so everything
+   in it gets a real hit area whatever it looks like. */
+.topbar-actions>.chip{position:relative;min-height:30px;padding:5px 10px;font-weight:600}
+.topbar-actions>.chip::after{content:"";position:absolute;left:-4px;right:-4px;top:50%;height:44px;transform:translateY(-50%)}
+
+/* A screen one level down always says so in the same place, so going
+   back never means hunting for the way you came in. */
+.topbar-back{
+  flex:none;width:34px;height:34px;margin-left:-7px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:11px;color:var(--tx2);
+  transition:background var(--dur) var(--ease),transform 90ms var(--ease);
+}
+.topbar-back svg{width:20px;height:20px;stroke-width:2}
+.topbar-back:active{background:var(--s2);transform:scale(.93)}
+
+#main{flex:1;width:100%;max-width:720px;margin:0 auto;padding:0 var(--gut) calc(var(--tabh) + env(safe-area-inset-bottom) + 30px)}
+
+.block{margin:var(--gut) 0}
+.hr{height:1px;background:var(--line-soft);border:0;margin:var(--gut) 0}
+
+/* ============================================================
+   TAB BAR
+   Rigid: it is always the same six, always in the same order,
+   always the same height, and it never moves under your thumb.
+   Interactive: one rail slides to the tab you are on, the icon
+   sits in a pill that fills, and the label is legible rather than
+   decorative. Painted once and then updated in place, which is
+   what lets the rail animate at all.
+   ============================================================ */
+#tabbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:45;
+  height:calc(var(--tabh) + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+  background:color-mix(in srgb,var(--ink) 88%,transparent);
+  -webkit-backdrop-filter:saturate(150%) blur(18px);
+  backdrop-filter:saturate(150%) blur(18px);
+  border-top:1px solid var(--line);
+  display:flex;justify-content:center;
+  touch-action:manipulation;
+}
+@supports not (backdrop-filter:blur(1px)){ #tabbar{background:var(--ink)} }
+#tabbar[hidden]{display:none}
+
+.tab{
+  flex:1 1 0;min-width:0;max-width:140px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  color:var(--tx3);position:relative;padding-top:3px;
+  transition:color var(--dur) var(--ease);
+  -webkit-user-select:none;user-select:none;
+}
+.tab .ico{
+  width:46px;height:27px;display:flex;align-items:center;justify-content:center;
+  border-radius:14px;background:transparent;
+  transition:background var(--dur) var(--ease),transform 260ms cubic-bezier(.34,1.5,.5,1);
+}
+.tab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.tab span{font-size:.66rem;font-weight:600;letter-spacing:-.005em;line-height:1.25;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tab:active .ico{transform:scale(.9)}
+.tab[aria-current="page"]{color:var(--accent)}
+.tab[aria-current="page"] .ico{background:var(--accent-wash)}
+.tab[aria-current="page"] svg{stroke-width:2}
+
+/* One rail for the whole bar, moved by transform, so switching tabs
+   reads as a single object sliding rather than two dots blinking. */
+.tabrail{
+  position:absolute;top:0;left:0;width:0;height:2.5px;border-radius:0 0 3px 3px;
+  background:var(--accent);pointer-events:none;
+  transition:transform 300ms cubic-bezier(.3,.8,.3,1),width 220ms var(--ease);
+}
+.tab .dot{
+  position:absolute;top:2px;right:calc(50% - 20px);
+  min-width:16px;height:16px;padding:0 4px;border-radius:9px;
+  background:var(--accent);color:var(--accent-ink);
+  font-size:.6rem;font-weight:700;font-variant-numeric:tabular-nums;
+  display:flex;align-items:center;justify-content:center;line-height:1;
+  box-shadow:0 0 0 2px var(--ink);
+}
+.tab .dot.soft{background:var(--done);color:var(--done-ink)}
+.tab .dot.pip{min-width:8px;width:8px;height:8px;padding:0;top:5px;right:calc(50% - 15px)}
+.tab .dot[hidden]{display:none}
+
+/* The view itself fades in on a tab change. Short enough that it never
+   sits between you and the thing you tapped. */
+#main.swap{animation:viewIn 220ms var(--ease)}
+@keyframes viewIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  min-height:44px;padding:11px 16px;border-radius:var(--r2);
+  background:var(--s2);color:var(--tx);
+  font-size:var(--fs-md);font-weight:580;
+  border:1px solid transparent;
+  transition:transform 90ms var(--ease),background var(--dur) var(--ease),opacity var(--dur);
+  user-select:none;
+}
+.btn:active{transform:scale(.975)}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.good{background:var(--done);color:var(--done-ink)}
+.btn.danger{background:var(--bad-wash);color:var(--bad)}
+.btn.quiet{background:transparent;border-color:var(--line);color:var(--tx)}
+.btn.full{width:100%}
+.btn.s{min-height:36px;padding:7px 11px;font-size:var(--fs-sm);border-radius:var(--r1);gap:5px}
+.btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.iconbtn{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;color:var(--tx2);transition:background var(--dur) var(--ease)}
+.iconbtn:active{background:var(--s2)}
+.iconbtn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.row{display:flex;align-items:center;gap:10px}
+.row.tight{gap:6px}
+.row.between{justify-content:space-between}
+.row.top{align-items:flex-start}
+.grow{flex:1;min-width:0}
+.wrap{display:flex;flex-wrap:wrap;gap:7px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+/* ---------- panels ---------- */
+.panel{background:var(--s1);border:1px solid var(--line-soft);border-radius:var(--r3);padding:var(--pad) calc(var(--pad) + 2px)}
+.panel+.panel{margin-top:10px}
+.panel-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:9px}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 2px 8px}
+.section-h h2{font-size:var(--fs-md);font-weight:620}
+
+.chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;background:var(--s2);color:var(--tx2);font-size:var(--fs-xs);font-weight:540;line-height:1.4;white-space:nowrap}
+.chip.live{background:var(--accent-wash);color:var(--accent)}
+.chip.done{background:var(--done-wash);color:var(--done)}
+.chip.warn{background:var(--warn-wash);color:var(--warn)}
+.chip.bad{background:var(--bad-wash);color:var(--bad)}
+.chip.on{background:var(--tx);color:var(--ink)}
+.chip svg{width:13px;height:13px;stroke-width:2}
+/* A chip you can press has to be pressable with a thumb. The pill keeps
+   its size; the thing you have to hit is bigger than the thing you see. */
+.chip.tap{position:relative;transition:transform 110ms var(--ease)}
+.chip.tap::after{content:"";position:absolute;left:0;right:0;top:50%;height:44px;transform:translateY(-50%)}
+.chip.tap:active{transform:scale(.94)}
+
+.note{border-left:2px solid var(--line);padding:2px 0 2px 11px;color:var(--tx2);font-size:var(--fs-sm);line-height:1.5}
+.note.live{border-color:var(--accent)}
+.note.good{border-color:var(--done)}
+.note.warn{border-color:var(--warn)}
+
+.empty{padding:26px 14px;text-align:center;color:var(--tx3);font-size:var(--fs-sm);line-height:1.6}
+.empty b{display:block;color:var(--tx2);font-weight:580;margin-bottom:3px}
+
+/* ---------- forms ---------- */
+.field{display:block;margin-top:12px}
+.field>.lbl{display:block;font-size:var(--fs-xs);color:var(--tx2);margin-bottom:5px;font-weight:540}
+.in{
+  width:100%;min-height:44px;padding:10px 12px;
+  background:var(--s2);border:1px solid var(--line);border-radius:var(--r2);
+  color:var(--tx);outline:none;
+  transition:border-color var(--dur) var(--ease);
+}
+.in:focus{border-color:var(--accent)}
+.in::placeholder{color:var(--tx3)}
+textarea.in{min-height:96px;resize:vertical;line-height:1.55}
+select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--tx3) 50%),linear-gradient(135deg,var(--tx3) 50%,transparent 50%);background-position:calc(100% - 16px) 19px,calc(100% - 11px) 19px;background-size:5px 5px;background-repeat:no-repeat;padding-right:34px}
+.in.s{min-height:36px;padding:7px 10px;font-size:var(--fs-sm)}
+.hint{font-size:var(--fs-xs);color:var(--tx3);margin-top:5px;line-height:1.5}
+
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.switch:last-child{border-bottom:0}
+.switch-txt{flex:1;min-width:0}
+.switch-txt b{display:block;font-weight:560;font-size:var(--fs-md)}
+.switch-txt span{display:block;font-size:var(--fs-xs);color:var(--tx3);margin-top:1px;line-height:1.45}
+.tgl{position:relative;width:46px;height:28px;border-radius:20px;background:var(--s3);flex:none;transition:background var(--dur) var(--ease)}
+.tgl::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--tx2);transition:transform var(--dur) var(--ease),background var(--dur)}
+.tgl[aria-checked="true"]{background:var(--accent)}
+.tgl[aria-checked="true"]::after{transform:translateX(18px);background:var(--accent-ink)}
+
+.seg{display:flex;gap:3px;background:var(--s2);border-radius:var(--r2);padding:3px;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1 0 auto;min-height:36px;padding:7px 12px;border-radius:9px;color:var(--tx2);font-size:var(--fs-sm);font-weight:560;white-space:nowrap;transition:background var(--dur) var(--ease),color var(--dur)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--tx)}
+.seg button svg{width:17px;height:17px}
+.seg button:active{transform:scale(.97)}
+[data-theme="light"] .seg button[aria-pressed="true"]{background:var(--s1)}
+
+/* ---------- lists ---------- */
+.list{list-style:none;padding:0;margin:0}
+.list>li{display:flex;align-items:flex-start;gap:11px;padding:12px 0;border-bottom:1px solid var(--line-soft)}
+.list>li:last-child{border-bottom:0}
+.list .body{flex:1;min-width:0}
+.list .title{font-size:var(--fs-md);font-weight:530;line-height:1.35}
+.list .meta{font-size:var(--fs-xs);color:var(--tx3);margin-top:2px}
+.list li.is-done .title{color:var(--tx3);text-decoration:line-through}
+.tickbox{position:relative;width:23px;height:23px;flex:none;margin-top:2px;border-radius:7px;border:1.7px solid var(--tx3);display:flex;align-items:center;justify-content:center;transition:background var(--dur) var(--ease),border-color var(--dur)}
+button.tickbox::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%)}
+.tickbox svg{width:13px;height:13px;stroke:var(--done-ink);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.5);transition:opacity 140ms var(--ease),transform 200ms var(--ease)}
+li.is-done .tickbox,.tickbox[aria-checked="true"]{background:var(--done);border-color:var(--done)}
+li.is-done .tickbox svg,.tickbox[aria-checked="true"] svg{opacity:1;transform:scale(1)}
+.chev{color:var(--tx3);flex:none;align-self:center}
+.chev svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.hero{padding:6px 0 2px}
+.hero .kicker{font-size:var(--fs-xs);color:var(--accent);font-weight:580}
+.hero .h{font-size:var(--fs-2xl);font-weight:640;letter-spacing:-.03em;line-height:1.12;margin-top:5px}
+.hero .p{color:var(--tx2);font-size:var(--fs-md);margin-top:6px;line-height:1.5}
+/* ---------- stats ---------- */
+.stat{background:var(--s1);border:1px solid var(--line-soft);border-radius:var(--r2);padding:11px 12px}
+.stat b{display:block;font-size:var(--fs-xl);font-weight:620;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:var(--fs-xs);color:var(--tx3);margin-top:3px;line-height:1.35}
+.stat.hl b{color:var(--accent)}
+.stat.ok b{color:var(--done)}
+
+.heat{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.heat button{aspect-ratio:1;border-radius:4px;background:var(--s2);transition:transform 110ms var(--ease)}
+.heat button:active{transform:scale(.85)}
+.heat .l1{background:color-mix(in srgb,var(--done) 22%,var(--s2))}
+.heat .l2{background:color-mix(in srgb,var(--done) 52%,var(--s2))}
+.heat .l3{background:var(--done)}
+.heat .today{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.heat .void{background:transparent;border:1px dashed var(--line-soft)}
+.heatkey{display:flex;align-items:center;gap:5px;font-size:var(--fs-xs);color:var(--tx3)}
+.heatkey i{width:9px;height:9px;border-radius:2px;display:block}
+
+svg.chart{width:100%;height:auto;display:block;overflow:visible}
+
+/* ---------- sheet ---------- */
+#scrim{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity 200ms var(--ease)}
+#scrim.in{opacity:1;pointer-events:auto}
+#scrim[hidden]{display:none}
+#sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:61;
+  max-height:92dvh;display:flex;flex-direction:column;
+  background:var(--s1);border-top:1px solid var(--line);
+  border-radius:20px 20px 0 0;
+  transform:translateY(101%);
+  transition:transform 280ms var(--ease);
+}
+#sheet.in{transform:translateY(0)}
+#sheet[hidden]{display:none}
+.sheet-in{width:100%;max-width:720px;margin:0 auto;padding:0 var(--gut) calc(var(--gut) + env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.sheet-grab{flex:none;padding:9px 0 4px;display:flex;justify-content:center;touch-action:none}
+.sheet-grab::before{content:"";width:38px;height:4px;border-radius:3px;background:var(--line)}
+.sheet-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding-bottom:4px}
+.sheet-hd h2{font-size:var(--fs-lg);padding-top:2px}
+.sheet-hd .sub{font-size:var(--fs-sm);color:var(--tx2);margin-top:2px;line-height:1.5}
+.sheet-ft{display:flex;gap:8px;margin-top:18px}
+.sheet-ft .btn{flex:1}
+.sheet-ft .btn.thin{flex:0 0 auto}
+
+#toast{
+  position:fixed;left:50%;bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 14px);
+  z-index:70;transform:translate(-50%,14px);opacity:0;pointer-events:none;
+  background:var(--tx);color:var(--ink);
+  padding:10px 17px;border-radius:22px;font-size:var(--fs-sm);font-weight:560;
+  max-width:88vw;text-align:center;
+  transition:opacity 200ms var(--ease),transform 240ms var(--ease);
+}
+#toast.in{opacity:1;transform:translate(-50%,0)}
+
+/* ============================================================
+   REEL — one card, the whole screen
+
+   The card is not a card sitting on a page any more: it IS the page.
+   Edge to edge, no frame, no deck under it, nothing above or below it
+   to read. Two corner buttons and a hairline of progress are the
+   entire interface that is not the words on the card, and both of the
+   buttons are quiet enough to disappear while you read.
+   ============================================================ */
+#reel{
+  position:fixed;inset:0;z-index:50;background:var(--ink);
+  overscroll-behavior:none;touch-action:none;
+  -webkit-user-select:none;user-select:none;
+}
+#reel[hidden]{display:none}
+
+/* How far through, as a line rather than a number. A number is a thing
+   you read; a line is a thing you notice. */
+.reel-prog{
+  position:absolute;left:0;right:0;top:0;z-index:3;height:2px;
+  background:color-mix(in srgb,var(--tx3) 16%,transparent);
+  pointer-events:none;
+}
+.reel-prog>i{display:block;height:100%;background:var(--accent);transition:width 320ms var(--ease)}
+
+/* The two buttons. They sit over the card, not in a bar above it, so
+   the card keeps the whole screen. Drags pass straight through them —
+   see wireDrag — and they only act on a press that never moved. */
+.reel-ctl{
+  position:absolute;left:0;right:0;top:0;z-index:4;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(env(safe-area-inset-top) + 8px) 10px 0;
+  pointer-events:none;
+}
+.reel-btn{
+  pointer-events:auto;flex:none;
+  width:40px;height:40px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--tx3);background:color-mix(in srgb,var(--s1) 70%,transparent);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  transition:color var(--dur) var(--ease),background var(--dur) var(--ease),transform 110ms var(--ease);
+}
+.reel-btn svg{width:20px;height:20px;stroke-width:2}
+.reel-btn:active{transform:scale(.9);color:var(--tx1);background:var(--s2)}
+
+.reel-stage{
+  position:absolute;inset:0;z-index:1;
+  overflow:hidden;touch-action:none;
+  perspective:1600px;
+}
+
+.rcard{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.rcard[hidden]{display:none}
+.rflip{position:absolute;inset:0;transform-style:preserve-3d;transition:transform 300ms cubic-bezier(.25,.8,.3,1)}
+.rface{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:calc(env(safe-area-inset-top) + 62px) calc(var(--gut) + 6px)
+          calc(env(safe-area-inset-bottom) + 42px);
+  background:var(--ink);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  overflow:hidden;
+}
+
+/* A wash in the subject's own hue across the top of the question side.
+   Enough to tell two decks apart in the corner of your eye, never enough
+   to compete with the text — and it is painted into the face rather than
+   sitting behind it, because the face now covers the whole screen. */
+.rface.front{
+  background:
+    radial-gradient(130% 52% at 50% 0,hsl(var(--deck-hue,18) 62% 48% / .13),transparent 72%),
+    var(--ink);
+}
+
+/* The answer side is told apart by a change of ground, not by a caption
+   saying which side you are on. It has to read in both themes, so it is
+   a tint of the accent rather than a shade of the background: in light
+   mode two shades of cream are the same colour. */
+.rface.back{
+  transform:rotateY(180deg);
+  background:
+    radial-gradient(130% 55% at 50% 0,color-mix(in srgb,var(--accent) 17%,transparent),transparent 70%),
+    var(--ink);
+}
+
+.reel-stage.dealing .rcard[data-slot="1"]{animation:dealIn 340ms cubic-bezier(.22,.9,.3,1)}
+@keyframes dealIn{from{transform:translate3d(0,28px,0) scale(.96);opacity:0}to{transform:translate3d(0,0,0) scale(1);opacity:1}}
+
+/* Nothing inside a card scrolls: a scroller in here would swallow the
+   gesture the whole screen exists to receive. The type is fitted to the
+   glass in fitCard() instead. */
+.rcard-body{
+  flex:1;display:flex;flex-direction:column;justify-content:center;
+  overflow:hidden;min-height:0;
+}
+.rcard-q,.rcard-ans{
+  font-size:clamp(1.8rem,7.6vw,2.7rem);font-weight:580;letter-spacing:-.028em;
+  line-height:1.24;white-space:pre-wrap;overflow-wrap:break-word;
+}
+.rcard-q.long,.rcard-ans.long{font-size:clamp(1.35rem,5.6vw,1.9rem);line-height:1.34;letter-spacing:-.022em}
+.rcard-q.xlong,.rcard-ans.xlong{font-size:clamp(1.05rem,4.2vw,1.35rem);line-height:1.46;letter-spacing:-.012em}
+.cloze{color:var(--accent);font-weight:640}
+.cloze.blank{background:var(--accent-wash);color:transparent;border-radius:5px;padding:0 4px;user-select:none}
+
+/* What a grade felt like, said in colour over the whole screen rather
+   than in a word laid on top of the one piece of text that matters. */
+.reel-stage::after{
+  content:"";position:absolute;inset:0;z-index:6;pointer-events:none;
+  opacity:0;background:transparent;
+}
+.reel-stage.t-again::after{animation:tintFlash 600ms var(--ease);background:radial-gradient(120% 60% at 50% 0,var(--bad),transparent 72%)}
+.reel-stage.t-run::after{animation:tintFlash 600ms var(--ease);background:radial-gradient(120% 60% at 50% 0,var(--accent),transparent 72%)}
+@keyframes tintFlash{0%{opacity:0}18%{opacity:.2}100%{opacity:0}}
+
+/* ---------- the end of the queue ---------- */
+.rcard.end .rface{background:linear-gradient(176deg,color-mix(in srgb,var(--accent-wash) 46%,var(--ink)),var(--ink) 64%)}
+.rcard-body.end{align-items:center;text-align:center;justify-content:center}
+.story-num{font-size:4.2rem;font-weight:650;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums;color:var(--accent)}
+.story-h{font-size:1.32rem;font-weight:600;letter-spacing:-.02em;margin-top:12px;max-width:22ch;line-height:1.3}
+.story-p{color:var(--tx2);font-size:var(--fs-md);margin-top:8px;max-width:30ch;line-height:1.55}
+.end-stats{width:100%;max-width:330px;margin-top:20px}
+.end-stats .stat{padding:9px 6px;text-align:center}
+.end-stats .stat b{font-size:var(--fs-lg)}
+.reel-endacts{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:420px;margin-top:26px}
+
+.gesture-list{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-direction:column;gap:12px}
+.gesture-list>li{display:flex;align-items:flex-start;gap:11px}
+.gesture-list .gi{
+  flex:none;width:32px;height:32px;border-radius:11px;
+  background:var(--s2);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+}
+.gesture-list .gi svg{width:16px;height:16px}
+.gesture-list b{display:block;font-size:var(--fs-md);font-weight:580;line-height:1.3}
+.gesture-list i{display:block;font-style:normal;font-size:var(--fs-xs);color:var(--tx3);margin-top:1px;line-height:1.45}
+
+.spark{position:fixed;pointer-events:none;z-index:55;width:5px;height:5px;border-radius:50%;background:var(--done)}
+
+/* ============================================================
+   FOCUS — the session owns the screen
+   ============================================================ */
+/* The session hides the top bar, because the bar is empty while it runs
+   and the clock wants the room. It does NOT hide the tab bar: losing the
+   way between tabs is losing the app, and no screen is worth that. */
+[data-session="focus"] #topbar{display:none}
+[data-immersive] #tabbar{display:none}
+[data-session="focus"] #main{
+  padding-top:calc(env(safe-area-inset-top) + 52px);
+  padding-bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 14px);
+}
+
+.focus-wrap{
+  display:flex;flex-direction:column;align-items:center;padding:4px 0 0;
+  min-height:calc(100dvh - var(--tabh) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 74px);
+  justify-content:center;gap:2px;
+}
+.focus-phase{font-size:var(--fs-sm);color:var(--tx2);font-weight:560;letter-spacing:.01em}
+.focus-task{font-size:1.35rem;font-weight:620;letter-spacing:-.025em;margin-top:4px;text-align:center;max-width:22ch;line-height:1.25}
+.focus-end{font-size:3.4rem;font-weight:640;letter-spacing:-.04em;margin:10px 0 6px;color:var(--done)}
+
+.dial{position:relative;width:min(290px,74vw);aspect-ratio:1;margin:22px 0 10px}
+.dial svg{width:100%;height:100%;transform:rotate(-90deg)}
+.dial circle{transition:stroke-dashoffset 900ms linear}
+.dial .face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dial .cd{font-size:3.5rem;font-weight:620;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.dial .cd.rest{color:var(--done)}
+.dial .sub{font-size:var(--fs-xs);color:var(--tx3);margin-top:8px;font-variant-numeric:tabular-nums}
+.pips{display:flex;gap:7px;margin-top:4px}
+.pips i{width:7px;height:7px;border-radius:50%;background:var(--s3)}
+.pips i.on{background:var(--accent)}
+
+.focus-acts{display:flex;gap:8px;width:100%;max-width:420px;margin-top:22px}
+.focus-acts .grow{flex:1}
+.btn.tall{min-height:54px;font-size:var(--fs-lg)}
+.btn.thin{flex:0 0 auto;padding-left:15px;padding-right:15px}
+
+.focus-pull{margin-top:14px;font-size:var(--fs-xs);color:var(--tx3);display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:20px;background:var(--s1);border:1px solid var(--line-soft)}
+.focus-pull b{font-variant-numeric:tabular-nums;color:var(--tx2)}
+.focus-pull.hit{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 35%,transparent)}
+.focus-pull svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.focus-say{margin-top:16px;max-width:34ch;text-align:center;font-size:var(--fs-sm);color:var(--tx3);line-height:1.55}
+.focus-say.wide{max-width:30ch;margin-top:6px}
+
+/* The label over a finished session. It came from the workout player,
+   which is gone; the session-complete banner still wears it. */
+.pl-kick{font-size:var(--fs-xs);color:var(--tx3);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.pl-kick.done{color:var(--done);display:inline-flex;align-items:center;gap:6px}
+.pl-kick.done svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+
+.startcard .start-title{font-size:1.5rem;font-weight:640;letter-spacing:-.03em;margin-top:4px;line-height:1.2}
+.xs.hl{color:var(--accent);font-weight:600}
+.xs.ok{color:var(--done);font-weight:600}
+
+/* ============================================================
+   THE INTENTION, THE BREATH
+   ============================================================ */
+
+/* "After I X, in Y." Written down once, read at the moment it matters. */
+.contract{
+  margin-top:12px;padding:11px 13px;
+  background:var(--s2);border-left:2px solid var(--accent);border-radius:0 var(--r1) var(--r1) 0;
+}
+.contract b{display:block;font-size:var(--fs-md);font-weight:560;line-height:1.45;margin-top:3px}
+
+.arrive{display:flex;flex-direction:column;align-items:center;padding:18px 0 4px;text-align:center}
+.breath{
+  position:relative;width:150px;height:150px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--accent-wash);
+  box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--accent) 45%,transparent);
+  transform:scale(.62);
+  transition:transform 4s cubic-bezier(.4,0,.5,1),background 4s linear;
+}
+.breath.in{transform:scale(1)}
+.breath.out{transform:scale(.62);transition-duration:6s}
+.breath b{font-size:var(--fs-lg);font-weight:600;letter-spacing:.02em;color:var(--accent)}
+.breath-count{margin-top:18px;font-size:var(--fs-xs);color:var(--tx3);font-variant-numeric:tabular-nums}
+.breath-say{margin-top:12px;max-width:30ch;font-size:var(--fs-sm);color:var(--tx2);line-height:1.6}
+@media (prefers-reduced-motion:reduce){
+  .breath{transition:none}
+}
+
+/* ---------- misc ---------- */
+.kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:var(--fs-sm)}
+.kv:last-child{border-bottom:0}
+.kv .k{color:var(--tx2)}
+.kv .v{font-variant-numeric:tabular-nums;text-align:right}
+.kv .v.bad{color:var(--bad)}
+
+.rule{padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.rule:last-child{border-bottom:0}
+.rule .if{font-size:var(--fs-sm);color:var(--tx2)}
+.rule .then{font-size:var(--fs-md);font-weight:530;margin-top:2px;line-height:1.45}
+
+.bar{height:6px;border-radius:4px;background:var(--s2);overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:4px;background:var(--accent);transition:width 500ms var(--ease)}
+.bar.ok>i{background:var(--done)}
+
+.sub-bar{display:flex;align-items:center;gap:9px;padding:6px 0}
+.sub-bar .nm{width:80px;flex:none;font-size:var(--fs-sm);color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sub-bar .tr{flex:1;height:7px;border-radius:4px;background:var(--s2);overflow:hidden}
+.sub-bar .tr>i{display:block;height:100%;border-radius:4px;background:var(--cool)}
+.sub-bar .vl{width:54px;text-align:right;font-size:var(--fs-xs);color:var(--tx2);font-variant-numeric:tabular-nums}
+
+#updater{position:fixed;left:12px;right:12px;bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 12px);z-index:65;background:var(--s2);border:1px solid var(--line);border-radius:14px;padding:11px 13px;display:flex;align-items:center;gap:11px}
+#updater[hidden]{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+
+/* ============================================================
+   SLIDERS — setting a number with a thumb, not a keyboard
+   ============================================================ */
+.slider{margin-top:16px}
+.slider-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px}
+.slider-h .lbl{font-size:var(--fs-xs);color:var(--tx2);font-weight:540}
+.slider-h .val{font-size:1.3rem;font-weight:660;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--accent)}
+.slider-h .val small{font-size:var(--fs-xs);font-weight:540;color:var(--tx3);margin-left:3px;letter-spacing:0}
+.slider.rest .slider-h .val{color:var(--done)}
+.rng{
+  -webkit-appearance:none;appearance:none;width:100%;height:34px;
+  background:transparent;display:block;touch-action:pan-y;
+}
+.rng::-webkit-slider-runnable-track{height:8px;border-radius:6px;background:var(--s2);border:1px solid var(--line-soft)}
+.rng::-moz-range-track{height:8px;border-radius:6px;background:var(--s2);border:1px solid var(--line-soft)}
+.rng::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:28px;height:28px;margin-top:-11px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--ink);
+  box-shadow:0 0 0 1px var(--accent);
+  transition:transform 120ms var(--ease);
+}
+.rng::-moz-range-thumb{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--ink);box-shadow:0 0 0 1px var(--accent);
+}
+.rng:active::-webkit-slider-thumb{transform:scale(1.14)}
+.rng.rest::-webkit-slider-thumb{background:var(--done);box-shadow:0 0 0 1px var(--done)}
+.rng.rest::-moz-range-thumb{background:var(--done);box-shadow:0 0 0 1px var(--done)}
+.slider-ticks{display:flex;justify-content:space-between;font-size:.62rem;color:var(--tx3);font-variant-numeric:tabular-nums;margin-top:-4px}
+
+/* A row of quick values under a slider. Tapping one is faster than
+   dragging to it, and dragging is faster than typing. */
+.quickrow{display:flex;gap:6px;margin-top:9px}
+.quickrow button{
+  flex:1;min-width:0;min-height:38px;border-radius:10px;background:var(--s2);
+  color:var(--tx2);font-size:.76rem;font-weight:580;white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+  transition:background var(--dur) var(--ease),color var(--dur),transform 100ms var(--ease);
+}
+.quickrow button:active{transform:scale(.95)}
+.quickrow button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* Stepper: two thumbs and a number, for things counted rather than measured. */
+.stepper{display:flex;align-items:center;gap:10px;margin-top:6px}
+.stepper .sbtn{
+  width:42px;height:42px;flex:none;border-radius:13px;background:var(--s2);color:var(--tx);
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--dur) var(--ease),transform 100ms var(--ease);
+}
+.stepper .sbtn:active{transform:scale(.92);background:var(--s3)}
+.stepper .sbtn svg{width:18px;height:18px;stroke-width:2.2}
+.stepper .sval{flex:1;text-align:center;line-height:1.15}
+.stepper .sval [data-stepval]{display:block;font-size:1.35rem;font-weight:660;font-variant-numeric:tabular-nums;letter-spacing:-.03em;color:var(--tx)}
+.stepper .sval span:last-child{display:block;font-size:var(--fs-xs);font-weight:500;color:var(--tx3);letter-spacing:0;margin-top:2px}
+
+
+/* ============================================================
+   FOCUS — a way out, always in the same corner
+   ============================================================ */
+.focus-bar{
+  position:fixed;left:0;right:0;top:0;z-index:4;
+  display:flex;align-items:center;gap:8px;
+  padding:calc(env(safe-area-inset-top) + 8px) var(--gut) 8px;
+  pointer-events:none;
+}
+.focus-bar>*{pointer-events:auto}
+.focus-bar .grow{text-align:center;font-size:var(--fs-xs);color:var(--tx3);font-weight:560}
+.backbtn{
+  display:inline-flex;align-items:center;gap:5px;flex:none;
+  min-height:36px;padding:7px 13px 7px 9px;border-radius:20px;
+  background:var(--s1);border:1px solid var(--line-soft);
+  color:var(--tx2);font-size:var(--fs-xs);font-weight:600;
+  transition:background var(--dur) var(--ease),transform 100ms var(--ease);
+}
+.backbtn:active{transform:scale(.94);background:var(--s2)}
+.backbtn svg{width:15px;height:15px;stroke-width:2.2}
+
+/* ============================================================
+   CARD FEED — the clean face, and the double tap
+   ============================================================ */
+/* A heart, thrown at the middle of the card and gone in half a second. */
+.rlike{
+  position:absolute;left:50%;top:46%;z-index:5;pointer-events:none;
+  transform:translate(-50%,-50%) scale(.3);opacity:0;color:var(--accent);
+}
+.rlike svg{width:96px;height:96px;stroke-width:1.6;fill:currentColor;opacity:.92}
+.rlike[hidden]{display:none}
+.rlike.go{animation:likePop 760ms cubic-bezier(.2,.9,.3,1)}
+@keyframes likePop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(-12deg)}
+  22%{opacity:1;transform:translate(-50%,-50%) scale(1.12) rotate(4deg)}
+  48%{opacity:1;transform:translate(-50%,-50%) scale(.96) rotate(0)}
+  100%{opacity:0;transform:translate(-50%,-58%) scale(1.02)}
+}
+/* The saved mark. A kept card gets a hairline down its leading edge —
+   visible, permanent, and not a word. */
+.rcard.liked .rface::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--accent);opacity:.85;
+}
+
+/* ---------- a quiet divider with a word on it ---------- */
+.rulehead{display:flex;align-items:center;gap:10px;margin:20px 0 8px;color:var(--tx3);font-size:var(--fs-xs);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.rulehead::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+
+/* A row is a grid, and a grid cannot be a button without losing the
+   grid. So the row is a div, one invisible button covers it, and the
+   things you can hit separately sit above it. */
+.tl-open{position:absolute;inset:0;z-index:0;border-radius:var(--r2)}
+.tl-row>.tl-time,.tl-row>.tl-puck,.tl-row>.tl-main{pointer-events:none}
+.tl-row>.tl-tail,.tl-row>.tl-live,.tl-row>.tl-note{position:relative;z-index:1}
+
+/* ---------- picking a kind of work by its glyph, not its name ---------- */
+.kindgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:6px}
+.kindtile{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:10px 3px 8px;border-radius:15px;
+  background:var(--s2);border:1px solid transparent;color:var(--tx3);
+  transition:background var(--dur) var(--ease),border-color var(--dur),color var(--dur),transform 100ms var(--ease);
+}
+.kindtile:active{transform:scale(.94)}
+.kindtile .p{
+  width:30px;height:30px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb,var(--k,var(--tx3)) 18%,var(--ink));color:var(--k,var(--tx3));
+}
+.kindtile .p svg{width:16px;height:16px}
+.kindtile span{font-size:.63rem;font-weight:580;line-height:1.2;text-align:center}
+.kindtile[aria-pressed="true"]{background:var(--s1);border-color:var(--k,var(--accent));color:var(--tx)}
+
+/* ---------- a time, nudged rather than typed ---------- */
+.timeset{display:flex;align-items:center;gap:7px;margin-top:6px}
+.timeset+.timeset{margin-top:8px}
+.timeset .ts-l{width:44px;flex:none;font-size:var(--fs-xs);color:var(--tx3);font-weight:600}
+.timeset .in{text-align:center;font-size:1.02rem;font-weight:600;font-variant-numeric:tabular-nums;flex:1;min-width:0}
+.timeset .nb{
+  width:40px;height:44px;flex:none;border-radius:12px;background:var(--s2);color:var(--tx2);
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--dur) var(--ease),transform 100ms var(--ease);
+}
+.timeset .nb:active{transform:scale(.9);background:var(--s3)}
+.timeset .nb svg{width:17px;height:17px;stroke-width:2.2}
+/* ---------- a clash, said out loud rather than outlined ---------- */
+.tl-row.clash .tl-puck{box-shadow:0 0 0 3px var(--ink),0 0 0 4.5px var(--bad)}
+
+/* ---------- setup rows inside a sheet ---------- */
+.setrow{
+  display:flex;align-items:center;gap:11px;width:100%;padding:13px 0;
+  border-bottom:1px solid var(--line-soft);text-align:left;
+}
+.setrow:last-child{border-bottom:0}
+.setrow .p{
+  width:34px;height:34px;flex:none;border-radius:12px;background:var(--s2);color:var(--tx2);
+  display:flex;align-items:center;justify-content:center;
+}
+.setrow .p svg{width:17px;height:17px}
+.setrow b{display:block;font-size:var(--fs-md);font-weight:540;line-height:1.3}
+.setrow i{display:block;font-style:normal;font-size:var(--fs-xs);color:var(--tx3);margin-top:1px;line-height:1.4}
+.setrow .chev{margin-left:auto}
+
+/* ---------- what you owe ----------
+   Overdue leans on the bad colour only at the edge, because a red list is
+   a list you avoid opening. */
+.list.owed>li{gap:10px;align-items:flex-start}
+.list.owed>li .body{padding:0}
+.list.owed>li.late .title{color:var(--tx)}
+.list.owed>li.late .meta{color:var(--bad)}
+.list.owed>li.now .meta{color:var(--accent)}
+.list.owed .chip{align-self:center;padding:3px 7px}
+.list.owed .chip svg{width:12px;height:12px}
+.owed-more{
+  display:flex;align-items:center;gap:8px;width:100%;
+  margin-top:10px;padding:10px 0 2px;
+  font-size:var(--fs-sm);color:var(--tx3);text-align:left;
+}
+.owed-more svg{width:15px;height:15px;flex:none}
+.owed-more .chev{margin-left:auto}
+
+/* ============================================================
+   WATER — one ring, two buttons
+
+   The ring carries two facts at once. The filled arc is what is in you;
+   the small dot on the track is where an evenly spread day would have
+   you by this minute. Being behind is therefore a position you can see
+   rather than a sentence in red, which is the difference between
+   information and a telling off.
+   ============================================================ */
+.wcard{display:flex;flex-direction:column;align-items:center;text-align:center}
+
+.wring{position:relative;width:min(220px,58vw);aspect-ratio:1;margin:6px 0 2px}
+.wring svg{width:100%;height:100%}
+.wring circle{transition:stroke-dashoffset 620ms var(--ease)}
+.wring .wface{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.wring .wface b{font-size:2.1rem;font-weight:640;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.wring .wface span{font-size:var(--fs-xs);color:var(--tx3);font-variant-numeric:tabular-nums}
+.wring.done .wface b{color:var(--done)}
+
+/* A live line, so it is allowed to be a sentence rather than a number. */
+.wsay{margin:12px 0 2px;max-width:32ch;font-size:var(--fs-sm);color:var(--tx2);line-height:1.55;min-height:2.4em}
+
+.wadd{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin-top:10px}
+.wadd .btn{font-variant-numeric:tabular-nums}
+.wadd .btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+/* The week. Seven bars that answer "is this a good week" without a
+   single number being read, and each one opens its own day. */
+.wweek{display:flex;gap:6px;align-items:flex-end;margin-top:4px}
+.wday{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;background:none;border:0}
+.wbar{
+  display:block;width:100%;height:64px;border-radius:7px;
+  background:var(--s2);position:relative;overflow:hidden;
+}
+.wbar>i{
+  position:absolute;left:0;right:0;bottom:0;display:block;
+  border-radius:7px;background:color-mix(in srgb,var(--accent) 70%,var(--s2));
+  transition:height 520ms var(--ease);
+}
+.wbar>i.hit{background:var(--done)}
+.wdow{font-size:.62rem;color:var(--tx3);font-weight:600;letter-spacing:.02em}
+.wday:active .wbar{transform:scale(.97)}
+.wday:last-child .wdow{color:var(--tx2)}
+
+/* ============================================================
+   THE DAY — three rings, a streak, a level
+
+   Everything on the You tab is a report rather than a control, so it is
+   drawn flatter and quieter than the screens that ask you to do
+   something. The one exception is the ring row, which is loud on
+   purpose: it is the only thing on the tab you can still change today.
+   ============================================================ */
+.ringrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px}
+.ringrow:has(.ringcell:only-child){grid-template-columns:1fr}
+.ringcell{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;min-width:0}
+.ringcell b{font-size:var(--fs-sm);font-weight:620;letter-spacing:-.01em}
+.ringcell span{font-size:.66rem;color:var(--tx3);line-height:1.35;max-width:14ch}
+.ringcell.done b{color:var(--done)}
+
+.ringdial{position:relative;width:64px;height:64px}
+.ringdial svg{width:100%;height:100%}
+.ringdial circle{transition:stroke-dashoffset 620ms var(--ease)}
+.ringdial i{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:var(--tx2);
+}
+.ringdial svg+i svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ringcell.done .ringdial i{color:var(--done)}
+
+/* The streak card. One number, big, and the rules behind it one tap in. */
+.streakcard{width:100%;text-align:left;display:block;transition:transform 110ms var(--ease)}
+.streakcard:active{transform:scale(.99)}
+.streak-n{
+  display:flex;align-items:baseline;gap:8px;margin-top:2px;
+  font-size:2.4rem;font-weight:660;letter-spacing:-.04em;line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.streak-n small{font-size:var(--fs-md);font-weight:560;letter-spacing:-.01em;color:var(--tx2)}
+.streak-n svg{width:26px;height:26px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.levelrow{display:flex;align-items:center;gap:10px}
+.level-name{font-size:1.35rem;font-weight:640;letter-spacing:-.03em;line-height:1.15}
+
+/* A fortnight as fourteen columns. No number anywhere: the shape of two
+   weeks is the whole message, and a number would be read instead of it. */
+.fortnight{display:flex;gap:4px;align-items:flex-end;height:52px;margin-top:4px}
+.fnday{
+  flex:1;min-width:0;height:100%;border-radius:5px;background:var(--s2);
+  position:relative;overflow:hidden;display:block;
+}
+.fnday>i{
+  position:absolute;left:0;right:0;bottom:0;display:block;border-radius:5px;
+  background:color-mix(in srgb,var(--tx3) 55%,var(--s2));
+  transition:height 520ms var(--ease);
+}
+.fnday.kept>i{background:color-mix(in srgb,var(--accent) 55%,var(--s2))}
+.fnday.won>i{background:var(--done)}
+.fnlabels{display:flex;gap:4px;margin-top:5px}
+.fnlabels>span{flex:1;min-width:0;text-align:center;font-size:.58rem;color:var(--tx3);font-weight:600}
+
+/* Milestones. A grid of small tiles rather than a list, because the
+   answer wanted from it is "how much of this is filled in". */
+.msgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:2px}
+.mscell{
+  display:flex;align-items:center;gap:8px;min-width:0;text-align:left;
+  padding:10px 11px;border-radius:var(--r2);
+  background:var(--s1);border:1px solid var(--line-soft);color:var(--tx3);
+  transition:transform 110ms var(--ease),border-color var(--dur) var(--ease);
+}
+.mscell:active{transform:scale(.97)}
+.mscell b{font-size:.74rem;font-weight:600;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.msic{flex:none;display:flex}
+.mscell svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.mscell.got{color:var(--tx);border-color:color-mix(in srgb,var(--done) 42%,transparent);background:var(--done-wash)}
+.mscell.got .msic{color:var(--done)}
+
+/* ============================================================
+   WEEK BARS — used by Focus and by Water
+   ============================================================ */
+.weekbars{display:flex;gap:6px;align-items:flex-end;margin-top:4px}
+.wbcol{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.wbcol .wbar{
+  display:block;width:100%;height:64px;border-radius:7px;
+  background:var(--s2);position:relative;overflow:hidden;
+}
+.wbcol .wbar>i{
+  position:absolute;left:0;right:0;bottom:0;display:block;border-radius:7px;
+  background:color-mix(in srgb,var(--accent) 70%,var(--s2));
+  transition:height 520ms var(--ease);
+}
+.wbcol .wbar>i.hit{background:var(--done)}
+/* The target, drawn across the bar rather than written under it. */
+.wbgoal{
+  position:absolute;left:0;right:0;height:1px;background:var(--tx3);opacity:.55;
+  z-index:1;pointer-events:none;
+}
+
+/* ============================================================
+   DEPTH — the live multiplier beside the pull counter
+   ============================================================ */
+.focus-meta{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.focus-meta .focus-pull{margin-top:0}
+.depth{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 13px;border-radius:20px;
+  background:var(--s1);border:1px solid var(--line-soft);
+  font-size:var(--fs-xs);color:var(--tx3);font-variant-numeric:tabular-nums;
+}
+.depth svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.depth.high{color:var(--done);border-color:color-mix(in srgb,var(--done) 35%,transparent)}
+.depth.low{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 35%,transparent)}
+
+/* ============================================================
+   CARDS — the review card and the deck list
+   ============================================================ */
+.reviewcard{width:100%;text-align:left;display:block;border-color:var(--line-soft);transition:transform 110ms var(--ease)}
+.reviewcard:active{transform:scale(.99)}
+.reviewcard.live{border-color:var(--accent)}
+.review-n{font-size:1.6rem;font-weight:640;letter-spacing:-.03em;margin-top:2px}
+
+/* A deck's own hue, so a list of eight is scannable without reading. */
+.dhue{
+  display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;
+  vertical-align:middle;position:relative;top:-1px;
+  background:hsl(var(--h) 45% 58%);
+}
+[data-theme="light"] .dhue{background:hsl(var(--h) 45% 46%)}
+
+/* The chips under the end-of-queue card.
+   The width matters: the card body is a centred column with
+   overflow:hidden, so a row wider than the card does not merely clip —
+   it drags the whole centred column sideways with it. Constraining the
+   row makes it wrap instead, which is what a flex row was supposed to
+   do all along. */
+.end-chips{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:center;
+  margin-top:14px;width:100%;max-width:340px;
+}
+
+/* ============================================================
+   WHAT NOW — one card, one reason, one button
+
+   The only forward-looking thing on the You tab, so it is the only
+   thing on it drawn at full contrast. Everything below it reports; this
+   one asks.
+   ============================================================ */
+.nextcard{border-color:var(--accent)}
+.nextcard.guard{border-color:var(--warn)}
+.nextcard.rest{border-color:var(--line-soft)}
+.next-label{font-size:1.28rem;font-weight:640;letter-spacing:-.028em;line-height:1.22}
+
+.nextic{
+  flex:none;width:44px;height:44px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--accent-wash);color:var(--accent);
+}
+.nextic.done{background:var(--done-wash);color:var(--done)}
+.nextic svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nextcard.guard .nextic{background:var(--warn-wash);color:var(--warn)}
+
+.nextacts{display:flex;gap:8px;margin-top:16px}
+.nextacts .grow{flex:1}
+
+/* ============================================================
+   MONEY — one number, then where it went
+   ============================================================ */
+.mcard .mbig{
+  font-size:2.9rem;font-weight:660;letter-spacing:-.045em;line-height:1;margin-top:4px;
+  font-variant-numeric:tabular-nums;
+}
+.mcard .mbig.over{color:var(--bad)}
+
+/* The even-spend mark, drawn on the bar rather than written under it. */
+.bargoal{
+  position:absolute;top:-3px;bottom:-3px;width:2px;border-radius:2px;
+  background:var(--tx2);opacity:.75;pointer-events:none;
+}
+.bar{position:relative;overflow:visible}
+.bar>i{position:relative;z-index:1}
+.bar.bad>i{background:var(--bad)}
+
+/* One tap per category. The amount is the only thing worth thinking
+   about, so the category should never cost a decision. */
+.catrow{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.catrow::-webkit-scrollbar{display:none}
+.catrow>button{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+  padding:9px 13px;border-radius:20px;white-space:nowrap;
+  background:var(--s1);border:1px solid var(--line-soft);color:var(--tx2);
+  font-size:var(--fs-sm);font-weight:560;
+  transition:transform 110ms var(--ease);
+}
+.catrow>button:active{transform:scale(.96)}
+
+/* ---------- the pie ----------
+   A donut, because the middle is the best place on the screen for the
+   total and a disc spends it on a point nobody can read an angle from. */
+.pierow{display:flex;align-items:center;gap:16px;margin-top:4px}
+.pie{position:relative;flex:0 0 auto;width:132px;height:132px}
+.pie svg{width:100%;height:100%}
+.pie circle{transition:stroke-dasharray 620ms var(--ease),stroke-dashoffset 620ms var(--ease)}
+.pieface{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;pointer-events:none;
+}
+.pieface b{font-size:1.12rem;font-weight:640;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.pieface span{font-size:.62rem;color:var(--tx3)}
+
+.pielegend{list-style:none;padding:0;margin:0;flex:1;min-width:0}
+.pielegend>li+li{border-top:1px solid var(--line-soft)}
+.pielegend button{
+  width:100%;display:flex;align-items:center;gap:8px;padding:7px 0;text-align:left;min-width:0;
+}
+.pdot{flex:none;width:9px;height:9px;border-radius:3px;background:hsl(var(--h) 48% 56%)}
+.pdot.grey{background:var(--tx3)}
+[data-theme="light"] .pdot{background:hsl(var(--h) 48% 46%)}
+.pname{flex:1;min-width:0;font-size:var(--fs-sm);font-weight:540;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pamt{font-size:var(--fs-sm);font-variant-numeric:tabular-nums;color:var(--tx2)}
+.ppct{flex:none;width:34px;text-align:right;font-size:.66rem;color:var(--tx3);font-variant-numeric:tabular-nums}
+
+@media (max-width:359px){
+  .pierow{flex-direction:column;align-items:stretch}
+  .pie{align-self:center}
+}
+
+/* A bar per day of the period, with the even-spend line across them. */
+.daybars{position:relative;display:flex;gap:2px;align-items:flex-end;height:58px;margin-top:4px}
+.dbcol{flex:1;min-width:0;height:100%;position:relative;display:block;border-radius:3px;background:var(--s2)}
+.dbcol.future{opacity:.45}
+.dbcol>i{
+  position:absolute;left:0;right:0;bottom:0;display:block;border-radius:3px;
+  background:color-mix(in srgb,var(--accent) 72%,var(--s2));
+  transition:height 520ms var(--ease);
+}
+.dbline{
+  position:absolute;left:0;right:0;height:1px;background:var(--tx3);opacity:.6;
+  pointer-events:none;z-index:2;
+}
+
+/* ============================================================
+   The plan — today around what does not move
+   ============================================================ */
+.seg.panes button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+
+/* Two budgets, read at a glance: how much of what the day can take is spoken for. */
+.loadrow{display:grid;grid-template-columns:78px 1fr auto;align-items:center;gap:10px;margin-top:8px}
+.loadrow .lbl{font-size:var(--fs-xs);color:var(--tx2);font-weight:540}
+.loadrow b{font-size:var(--fs-sm);font-weight:620;font-variant-numeric:tabular-nums;min-width:58px;text-align:right}
+.loadrow b small{color:var(--tx3);font-weight:500}
+
+.plan-alerts{display:flex;flex-direction:column;gap:10px}
+.plan-alerts .note{background:var(--s1);border-radius:0 var(--r2) var(--r2) 0;padding:10px 12px 10px 12px;color:var(--tx2)}
+.plan-alerts .note b{color:var(--tx);font-weight:600}
+.plan-alerts .iconbtn{width:32px;height:32px;flex:none}
+
+/* The timeline. A time column, a marker, and the thing. Anchors are
+   quiet because they are furniture; tasks carry their quadrant's colour
+   on the marker, because that colour is the decision already made. */
+.plan-tl{list-style:none;padding:0;margin:0}
+.pl-row{display:grid;grid-template-columns:54px 26px 1fr auto;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--line-soft);min-height:48px}
+.pl-row:last-child{border-bottom:0}
+.pl-time{display:flex;flex-direction:column;font-variant-numeric:tabular-nums;line-height:1.25}
+.pl-time b{font-size:var(--fs-sm);font-weight:600}
+.pl-time i{font-style:normal;font-size:.66rem;color:var(--tx3)}
+.pl-dot{width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--s2);color:var(--tx3)}
+.pl-dot svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pl-dot.live{background:var(--accent-wash);color:var(--accent)}
+.pl-main{min-width:0;text-align:left;display:block;width:100%}
+.pl-main .t{font-size:var(--fs-md);font-weight:540;line-height:1.3;overflow-wrap:anywhere}
+.pl-main .m{font-size:var(--fs-xs);color:var(--tx3);margin-top:2px;display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.pl-row>.btn.s{min-width:40px;padding:7px 10px}
+
+.pl-row.anchor .t{color:var(--tx2);font-weight:520}
+.pl-row.k-deep .pl-dot{background:var(--accent-wash);color:var(--accent)}
+.pl-row.k-deep .t{color:var(--tx);font-weight:600}
+.pl-row.k-train .pl-dot{color:var(--warn)}
+.pl-row.k-protected .pl-dot{color:var(--cool)}
+.pl-row.busy .pl-dot{background:var(--warn-wash);color:var(--warn)}
+.pl-row.mark{min-height:36px;padding:6px 0}
+.pl-row.mark .t{font-size:var(--fs-sm);color:var(--tx3);font-weight:520}
+.pl-row.free{min-height:30px;padding:5px 0}
+.pl-row.free .pl-time b{font-weight:500;color:var(--tx3)}
+.pl-row.free .pl-dot{background:transparent;border:1px dashed var(--line);width:12px;height:12px;margin:0 auto;border-radius:4px}
+.pl-row.past{opacity:.45}
+.pl-row.now{background:linear-gradient(90deg,var(--accent-wash),transparent 85%);border-radius:var(--r2);padding-left:6px;margin-left:-6px}
+
+.pl-row.task .tickbox{margin:0 auto}
+.pl-row.task.q1 .tickbox{border-color:var(--accent)}
+.pl-row.task.q2 .tickbox{border-color:var(--done)}
+.pl-row.task.q3 .tickbox{border-color:var(--warn)}
+.pl-row.is-done .t{color:var(--tx3);text-decoration:line-through}
+.pl-row.is-done .tickbox{background:var(--done);border-color:var(--done)}
+
+/* A mini list has no markers, so the quadrant goes on the edge instead. */
+.plan-tl.mini .pl-row{grid-template-columns:54px 1fr;min-height:40px;padding:7px 0 7px 9px;border-left:2px solid var(--line)}
+.plan-tl.mini .pl-row.q1{border-left-color:var(--accent)}
+.plan-tl.mini .pl-row.q2{border-left-color:var(--done)}
+.plan-tl.mini .pl-row.q3{border-left-color:var(--warn)}
+
+.pl-now{position:relative;height:0;margin:2px 0;border-top:1.5px solid var(--accent);list-style:none}
+.pl-now span{position:absolute;right:0;top:-9px;background:var(--s1);padding:0 0 0 6px;font-size:.64rem;font-weight:650;color:var(--accent);letter-spacing:.03em}
+
+.qtag{display:inline-block;padding:0 6px;border-radius:6px;font-size:.62rem;font-weight:700;letter-spacing:.03em;line-height:1.6;background:var(--s2);color:var(--tx2)}
+.qtag.q1{background:var(--accent-wash);color:var(--accent)}
+.qtag.q2{background:var(--done-wash);color:var(--done)}
+.qtag.q3{background:var(--warn-wash);color:var(--warn)}
+
+/* The matrix, as four buttons. Tapping a square answers both questions. */
+.qgrid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+.qcell{display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:9px 11px;border-radius:var(--r2);background:var(--s2);border:1px solid transparent;text-align:left;color:var(--tx3);transition:background var(--dur) var(--ease),border-color var(--dur),transform 100ms var(--ease)}
+.qcell:active{transform:scale(.97)}
+.qcell b{font-size:var(--fs-sm);font-weight:700}
+.qcell span{font-size:var(--fs-xs)}
+.qcell.q1[aria-pressed="true"]{background:var(--accent-wash);border-color:var(--accent);color:var(--accent)}
+.qcell.q2[aria-pressed="true"]{background:var(--done-wash);border-color:var(--done);color:var(--done)}
+.qcell.q3[aria-pressed="true"]{background:var(--warn-wash);border-color:var(--warn);color:var(--warn)}
+.qcell.q4[aria-pressed="true"]{background:var(--s1);border-color:var(--tx3);color:var(--tx2)}
+.qax{grid-column:1 / -1;text-align:center;font-size:.62rem;color:var(--tx3);letter-spacing:.04em}
+#qsay{margin-top:10px}
+#minPick button{text-align:center;padding:0 2px}
+
+.seg.days button{flex:1 1 0;min-width:0;padding:7px 0}
